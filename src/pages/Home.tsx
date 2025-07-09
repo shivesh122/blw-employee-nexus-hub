@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Train, Users, Shield, Award, ArrowRight } from 'lucide-react';
@@ -29,11 +28,6 @@ const Home = () => {
               <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
                 <Link to="/employee-login">
                   Employee Portal <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" className="bg-white text-blue-600 hover:bg-gray-100">
-                <Link to="/admin-login">
-                  Admin Panel <Shield className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600">
