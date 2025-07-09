@@ -103,7 +103,7 @@ const Home = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">
-              <Link to="/employeelogin">
+              <Link to="/EmployeeLogin">
                 Create Employee Account
               </Link>
             </Button>
