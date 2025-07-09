@@ -1,6 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script>
+  const supabase = supabase.createClient(
+    'https://qfcfcmtgtgdltnuknqyh.supabase.co', // Replace with your project URL
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFmY2ZjbXRndGdkbHRudWtucXloIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTIwMzcwMzIsImV4cCI6MjA2NzYxMzAzMn0.l9V0BVC94R-AE-e9D8kFCl8uEmP9Ov7JA1c218baziE'                        // Replace with your public anon key
+  );
+</script>
+<div class="container">
+  <h2>Create Employee Account</h2>
+  <form id="employeeForm">
+    <input type="text" id="name" placeholder="Full Name" required />
+    <input type="email" id="email" placeholder="Email Address" required />
+    <input type="text" id="employeeId" placeholder="Employee ID" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <button type="submit">Create Account</button>
+  </form>
+  <p id="status"></p>
+</div>
+
+<script>
+  const form = document.getElementById("employeeForm");
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const employeeId = document.getElementById("employeeId").value;
+    const password = document.getElementById("password").value;
+
+    // 1. Create user with Supabase Auth
+    const { user, error: signupError } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (signupError) {
+      document.getElementById("status").textContent = `❌ Error: ${signupError.message}`;
+      return;
+    }
+
+    // 2. Store employee info in Supabase Table (e.g. "employees")
+    const { error: dbError } = await supabase.from("employees").insert([
+      {
+        name,
+        email,
+        employee_id: employeeId,
+        user_id: user.id,
+      },
+    ]);
+
+    if (dbError) {
+      document.getElementById("status").textContent = `⚠️ Auth success but DB error: ${dbError.message}`;
+      return;
+    }
+
+    document.getElementById("status").textContent = "✅ Employee account created successfully!";
+    form.reset();
+  });
+</script>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>blw-employee-nexus-hub</title>
