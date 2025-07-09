@@ -7,6 +7,26 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
+const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Contact form submitted:', formData);
+    // Handle form submission
+  };
 
   return (
     <div className="min-h-screen py-12">
@@ -190,7 +210,3 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 };
 
 export default Contact;
-function setIsSubmitting(arg0: boolean) {
-  throw new Error('Function not implemented.');
-}
-
