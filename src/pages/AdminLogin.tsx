@@ -7,13 +7,19 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 
 const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+
+  const { signIn } = useAuth();
+  const { toast } = useToast();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -22,10 +28,48 @@ const AdminLogin = () => {
     });
   };
 
-  const handleSignIn = (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle admin sign in logic
-    console.log('Admin sign in:', formData);
+    setLoading(true);
+    
+    try {
+      const { error } = await signIn(formData.email, formData.password);
+      
+      if (error) {
+        if (error.message.includes('Invalid login credentials')) {
+          toast({
+            title: "Access Denied",
+            description: "Invalid administrator credentials. Please verify your email and password.",
+            variant: "destructive"
+          });
+        } else if (error.message.includes('Email not confirmed')) {
+          toast({
+            title: "Email Not Confirmed",
+            description: "Please check your email and click the confirmation link before signing in.",
+            variant: "destructive"
+          });
+        } else {
+          toast({
+            title: "Access Denied",
+            description: error.message || "Authentication failed. Please contact IT support if you continue to experience issues.",
+            variant: "destructive"
+          });
+        }
+      } else {
+        toast({
+          title: "Admin Access Granted",
+          description: "Welcome to the administrative dashboard."
+        });
+      }
+    } catch (err) {
+      toast({
+        title: "System Error",
+        description: "An unexpected error occurred. Please contact IT support.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -69,6 +113,7 @@ const AdminLogin = () => {
                     placeholder="admin@blw.gov.in"
                     value={formData.email}
                     onChange={handleInputChange}
+                    disabled={loading}
                   />
                 </div>
               </div>
@@ -86,6 +131,7 @@ const AdminLogin = () => {
                     placeholder="Enter admin password"
                     value={formData.password}
                     onChange={handleInputChange}
+                    disabled={loading}
                   />
                   <button
                     type="button"
@@ -97,16 +143,8 @@ const AdminLogin = () => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
-                <div className="text-sm">
-                  <Link to="/admin-recovery" className="text-red-600 hover:text-red-500">
-                    Account recovery
-                  </Link>
-                </div>
-              </div>
-
-              <Button type="submit" className="w-full bg-red-600 hover:bg-red-700">
-                Access Admin Dashboard
+              <Button type="submit" className="w-full bg-red-600 hover:bg-red-700" disabled={loading}>
+                {loading ? "Authenticating..." : "Access Admin Dashboard"}
               </Button>
             </form>
           </CardContent>

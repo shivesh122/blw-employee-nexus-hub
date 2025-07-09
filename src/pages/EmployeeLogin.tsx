@@ -1,41 +1,152 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { User, Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 
 const EmployeeLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState({
+  const [loading, setLoading] = useState(false);
+  const [signInData, setSignInData] = useState({
+    email: '',
+    password: ''
+  });
+  const [signUpData, setSignUpData] = useState({
     email: '',
     password: '',
-    name: '',
+    firstName: '',
+    lastName: '',
     empId: '',
     department: '',
     designation: ''
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
+  const { signIn, signUp } = useAuth();
+  const { toast } = useToast();
+
+  const handleSignInChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSignInData({
+      ...signInData,
       [e.target.name]: e.target.value
     });
   };
 
-  const handleSignIn = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle sign in logic
-    console.log('Sign in:', { email: formData.email, password: formData.password });
+  const handleSignUpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSignUpData({
+      ...signUpData,
+      [e.target.name]: e.target.value
+    });
   };
 
-  const handleSignUp = (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle sign up logic
-    console.log('Sign up:', formData);
+    setLoading(true);
+    
+    try {
+      const { error } = await signIn(signInData.email, signInData.password);
+      
+      if (error) {
+        if (error.message.includes('Invalid login credentials')) {
+          toast({
+            title: "Sign In Failed",
+            description: "Invalid email or password. Please check your credentials and try again.",
+            variant: "destructive"
+          });
+        } else if (error.message.includes('Email not confirmed')) {
+          toast({
+            title: "Email Not Confirmed",
+            description: "Please check your email and click the confirmation link before signing in.",
+            variant: "destructive"
+          });
+        } else {
+          toast({
+            title: "Sign In Failed",
+            description: error.message || "An unexpected error occurred. Please try again.",
+            variant: "destructive"
+          });
+        }
+      } else {
+        toast({
+          title: "Welcome back!",
+          description: "You have successfully signed in to your account."
+        });
+      }
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    
+    try {
+      const { error } = await signUp(signUpData.email, signUpData.password, {
+        first_name: signUpData.firstName,
+        last_name: signUpData.lastName,
+        employee_id: signUpData.empId,
+        department: signUpData.department,
+        designation: signUpData.designation
+      });
+      
+      if (error) {
+        if (error.message.includes('User already registered')) {
+          toast({
+            title: "Account Already Exists",
+            description: "An account with this email already exists. Please sign in instead.",
+            variant: "destructive"
+          });
+        } else if (error.message.includes('Password should be at least')) {
+          toast({
+            title: "Weak Password",
+            description: "Password should be at least 6 characters long.",
+            variant: "destructive"
+          });
+        } else {
+          toast({
+            title: "Sign Up Failed",
+            description: error.message || "An unexpected error occurred. Please try again.",
+            variant: "destructive"
+          });
+        }
+      } else {
+        toast({
+          title: "Account Created Successfully!",
+          description: "Please check your email for a confirmation link to complete your registration."
+        });
+        // Clear form
+        setSignUpData({
+          email: '',
+          password: '',
+          firstName: '',
+          lastName: '',
+          empId: '',
+          department: '',
+          designation: ''
+        });
+      }
+    } catch (err) {
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -72,8 +183,9 @@ const EmployeeLogin = () => {
                         required
                         className="pl-10"
                         placeholder="your.email@blw.gov.in"
-                        value={formData.email}
-                        onChange={handleInputChange}
+                        value={signInData.email}
+                        onChange={handleSignInChange}
+                        disabled={loading}
                       />
                     </div>
                   </div>
@@ -89,8 +201,9 @@ const EmployeeLogin = () => {
                         required
                         className="pl-10 pr-10"
                         placeholder="Enter your password"
-                        value={formData.password}
-                        onChange={handleInputChange}
+                        value={signInData.password}
+                        onChange={handleSignInChange}
+                        disabled={loading}
                       />
                       <button
                         type="button"
@@ -102,16 +215,8 @@ const EmployeeLogin = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm">
-                      <Link to="/forgot-password" className="text-blue-600 hover:text-blue-500">
-                        Forgot your password?
-                      </Link>
-                    </div>
-                  </div>
-
-                  <Button type="submit" className="w-full">
-                    Sign In to Dashboard
+                  <Button type="submit" className="w-full" disabled={loading}>
+                    {loading ? "Signing In..." : "Sign In to Dashboard"}
                   </Button>
                 </form>
               </TabsContent>
@@ -120,27 +225,41 @@ const EmployeeLogin = () => {
                 <form onSubmit={handleSignUp} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="name">Full Name</Label>
+                      <Label htmlFor="firstName">First Name</Label>
                       <Input
-                        id="name"
-                        name="name"
+                        id="firstName"
+                        name="firstName"
                         required
-                        placeholder="Full Name"
-                        value={formData.name}
-                        onChange={handleInputChange}
+                        placeholder="First Name"
+                        value={signUpData.firstName}
+                        onChange={handleSignUpChange}
+                        disabled={loading}
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="empId">Employee ID</Label>
+                      <Label htmlFor="lastName">Last Name</Label>
                       <Input
-                        id="empId"
-                        name="empId"
+                        id="lastName"
+                        name="lastName"
                         required
-                        placeholder="BLW001"
-                        value={formData.empId}
-                        onChange={handleInputChange}
+                        placeholder="Last Name"
+                        value={signUpData.lastName}
+                        onChange={handleSignUpChange}
+                        disabled={loading}
                       />
                     </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="empId">Employee ID</Label>
+                    <Input
+                      id="empId"
+                      name="empId"
+                      placeholder="BLW001"
+                      value={signUpData.empId}
+                      onChange={handleSignUpChange}
+                      disabled={loading}
+                    />
                   </div>
 
                   <div className="space-y-2">
@@ -154,8 +273,9 @@ const EmployeeLogin = () => {
                         required
                         className="pl-10"
                         placeholder="your.email@blw.gov.in"
-                        value={formData.email}
-                        onChange={handleInputChange}
+                        value={signUpData.email}
+                        onChange={handleSignUpChange}
+                        disabled={loading}
                       />
                     </div>
                   </div>
@@ -166,10 +286,10 @@ const EmployeeLogin = () => {
                       <Input
                         id="department"
                         name="department"
-                        required
                         placeholder="Production"
-                        value={formData.department}
-                        onChange={handleInputChange}
+                        value={signUpData.department}
+                        onChange={handleSignUpChange}
+                        disabled={loading}
                       />
                     </div>
                     <div className="space-y-2">
@@ -177,10 +297,10 @@ const EmployeeLogin = () => {
                       <Input
                         id="designation"
                         name="designation"
-                        required
                         placeholder="Engineer"
-                        value={formData.designation}
-                        onChange={handleInputChange}
+                        value={signUpData.designation}
+                        onChange={handleSignUpChange}
+                        disabled={loading}
                       />
                     </div>
                   </div>
@@ -195,9 +315,11 @@ const EmployeeLogin = () => {
                         type={showPassword ? "text" : "password"}
                         required
                         className="pl-10 pr-10"
-                        placeholder="Create password"
-                        value={formData.password}
-                        onChange={handleInputChange}
+                        placeholder="Create password (min 6 characters)"
+                        value={signUpData.password}
+                        onChange={handleSignUpChange}
+                        disabled={loading}
+                        minLength={6}
                       />
                       <button
                         type="button"
@@ -209,8 +331,8 @@ const EmployeeLogin = () => {
                     </div>
                   </div>
 
-                  <Button type="submit" className="w-full">
-                    Create Employee Account
+                  <Button type="submit" className="w-full" disabled={loading}>
+                    {loading ? "Creating Account..." : "Create Employee Account"}
                   </Button>
                 </form>
               </TabsContent>

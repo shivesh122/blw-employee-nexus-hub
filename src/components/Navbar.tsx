@@ -1,29 +1,64 @@
 
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, User, Settings, LogOut, Train } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, User, LogOut, Train } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
+  const { toast } = useToast();
   
   const isActive = (path: string) => location.pathname === path;
   
-  const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'About BLW', path: '/about' },
-    { name: 'Employee Portal', path: '/employee-login' },
-    { name: 'Admin Portal', path: '/admin-login' },
-    { name: 'Contact', path: '/contact' },
-  ];
+  const handleSignOut = async () => {
+    const { error } = await signOut();
+    if (error) {
+      toast({
+        title: "Sign Out Failed",
+        description: "There was an error signing out. Please try again.",
+        variant: "destructive"
+      });
+    } else {
+      toast({
+        title: "Signed Out",
+        description: "You have been successfully signed out."
+      });
+      navigate('/');
+    }
+  };
+
+  // Different navigation items based on authentication status
+  const getNavItems = () => {
+    if (user) {
+      return [
+        { name: 'Dashboard', path: '/employee-dashboard' },
+        { name: 'About BLW', path: '/about' },
+        { name: 'Contact', path: '/contact' },
+      ];
+    } else {
+      return [
+        { name: 'Home', path: '/' },
+        { name: 'About BLW', path: '/about' },
+        { name: 'Employee Portal', path: '/employee-login' },
+        { name: 'Admin Portal', path: '/admin-login' },
+        { name: 'Contact', path: '/contact' },
+      ];
+    }
+  };
+
+  const navItems = getNavItems();
 
   return (
     <nav className="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-2">
+            <Link to={user ? "/employee-dashboard" : "/"} className="flex items-center space-x-2">
               <Train className="h-8 w-8 text-blue-600" />
               <span className="text-xl font-bold text-gray-900">BLW</span>
             </Link>
@@ -44,6 +79,24 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
+            
+            {user && (
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2 text-sm text-gray-700">
+                  <User className="h-4 w-4" />
+                  <span>{user.email}</span>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleSignOut}
+                  className="flex items-center space-x-2"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>Sign Out</span>
+                </Button>
+              </div>
+            )}
           </div>
           
           {/* Mobile menu button */}
@@ -77,6 +130,24 @@ const Navbar = () => {
                 {item.name}
               </Link>
             ))}
+            
+            {user && (
+              <div className="px-3 py-2 border-t mt-2">
+                <div className="flex items-center space-x-2 text-sm text-gray-700 mb-2">
+                  <User className="h-4 w-4" />
+                  <span>{user.email}</span>
+                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleSignOut}
+                  className="flex items-center space-x-2 w-full"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>Sign Out</span>
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       )}
