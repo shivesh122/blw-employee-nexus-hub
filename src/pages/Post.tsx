@@ -71,7 +71,10 @@ const Post = () => {
         .eq('published', true)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching post:', error);
+        throw error;
+      }
       setPost(data);
 
       // Update page meta tags
@@ -100,9 +103,11 @@ const Post = () => {
   };
 
   const trackView = async () => {
+    if (!post?.id) return;
+    
     try {
       await supabase.from('post_views').insert({
-        post_id: post?.id,
+        post_id: post.id,
         viewer_ip: '', // Could be populated by edge function
         user_agent: navigator.userAgent
       });
