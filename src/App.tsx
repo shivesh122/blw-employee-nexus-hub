@@ -14,6 +14,9 @@ import EmployeeDashboard from "./pages/EmployeeDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import Blog from "./pages/Blog";
+import Post from "./pages/Post";
+import Auth from "./pages/Auth";
 
 const queryClient = new QueryClient();
 
@@ -25,7 +28,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }
   
   if (!user) {
-    return <Navigate to="/employee-login" replace />;
+    return <Navigate to="/auth" replace />;
   }
   
   return <>{children}</>;
@@ -39,7 +42,7 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   }
   
   if (user) {
-    return <Navigate to="/employee-dashboard" replace />;
+    return <Navigate to="/blog" replace />;
   }
   
   return <>{children}</>;
@@ -51,6 +54,16 @@ const AppRoutes = () => (
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/blog" element={<Blog />} />
+      <Route path="/post/:slug" element={<Post />} />
+      <Route 
+        path="/auth" 
+        element={
+          <PublicRoute>
+            <Auth />
+          </PublicRoute>
+        } 
+      />
       <Route 
         path="/employee-login" 
         element={
