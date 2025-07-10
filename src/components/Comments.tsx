@@ -43,7 +43,8 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
 
   const fetchComments = async () => {
     try {
-      const { data, error } = await supabase
+      // Using type assertion to work around the type definition limitations
+      const { data, error } = await (supabase as any)
         .from('comments')
         .select(`
           id,
@@ -110,7 +111,8 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
 
     setSubmitting(true);
     try {
-      const { error } = await supabase.from('comments').insert({
+      // Using type assertion to work around the type definition limitations
+      const { error } = await (supabase as any).from('comments').insert({
         post_id: postId,
         content: content.trim(),
         author_id: user.id,
@@ -144,7 +146,8 @@ const Comments: React.FC<CommentsProps> = ({ postId }) => {
 
   const deleteComment = async (commentId: string) => {
     try {
-      const { error } = await supabase
+      // Using type assertion to work around the type definition limitations
+      const { error } = await (supabase as any)
         .from('comments')
         .delete()
         .eq('id', commentId);

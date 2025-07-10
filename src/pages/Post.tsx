@@ -40,13 +40,19 @@ const Post = () => {
   useEffect(() => {
     if (slug) {
       fetchPost();
-      trackView();
     }
   }, [slug]);
 
+  useEffect(() => {
+    if (post?.id) {
+      trackView();
+    }
+  }, [post?.id]);
+
   const fetchPost = async () => {
     try {
-      const { data, error } = await supabase
+      // Using type assertion to work around the type definition limitations
+      const { data, error } = await (supabase as any)
         .from('posts')
         .select(`
           id,
@@ -106,7 +112,7 @@ const Post = () => {
     if (!post?.id) return;
     
     try {
-      await supabase.from('post_views').insert({
+      await (supabase as any).from('post_views').insert({
         post_id: post.id,
         viewer_ip: '', // Could be populated by edge function
         user_agent: navigator.userAgent

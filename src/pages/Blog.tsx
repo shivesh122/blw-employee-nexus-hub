@@ -34,7 +34,8 @@ const Blog = () => {
 
   const fetchPosts = async () => {
     try {
-      const { data, error } = await supabase
+      // Using type assertion to work around the type definition limitations
+      const { data, error } = await (supabase as any)
         .from('posts')
         .select(`
           id,
