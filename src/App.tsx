@@ -17,8 +17,9 @@ import NotFound from "./pages/NotFound";
 import Blog from "./pages/Blog";
 import Post from "./pages/Post";
 import Auth from "./pages/Auth";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-const queryClient = new queryClient();
+const queryClient = new QueryClient();
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
