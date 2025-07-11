@@ -1,73 +1,162 @@
-# Welcome to your Lovable project
+# 🚂 BLW Employee Nexus Hub
 
-## Project info
+Welcome to the **BLW Employee Nexus Hub**, a full-stack employee management platform developed for **Banaras Locomotive Works (BLW)** – an Indian Railway locomotive manufacturing and repair hub. This web application streamlines employee management, administrative control, and department-level workflows within a secure and responsive interface.
 
-**URL**: https://lovable.dev/projects/ea674731-6c3e-4c1b-8759-d57f5da17de0
+---
 
-## How can I edit this code?
+## 📌 Key Features
 
-There are several ways of editing your application.
+### 🧑‍💼 Employee Panel
+- ✅ Secure Login/Signup (via Supabase Auth)
+- 👤 View and update personal details
+- 📄 Download payslips, work reports, and notices
+- 📝 Submit leave requests and feedback
+- 🧾 Upload documents (Aadhaar, PAN, etc.)
 
-**Use Lovable**
+### 🔐 Admin Panel
+- 🧑‍💻 Super admin access (secured by role-based auth)
+- 🔍 View, add, edit & delete employee records
+- 📊 Admin Dashboard with employee statistics
+- 📤 Upload official circulars and documents
+- 🧾 Manage department-specific tasks & reports
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/ea674731-6c3e-4c1b-8759-d57f5da17de0) and start prompting.
+### 🧰 Department Tools
+- 🚧 Repair Logs for workshop engineers
+- 📆 Shift Management System
+- 📋 Attendance Tracker
+- 🔄 Transfer Requests between departments
 
-Changes made via Lovable will be committed automatically to this repo.
+### 🌐 General
+- 💾 Supabase as the backend (PostgreSQL + Auth + Storage)
+- 🧱 Modular and scalable architecture
+- 📱 Fully responsive (Mobile + Desktop)
+- 🧭 Navigation bar with multi-section routing
 
-**Use your preferred IDE**
+---
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🔧 Tech Stack
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+| Layer        | Technology          |
+|--------------|---------------------|
+| Frontend     | React.js, Tailwind CSS |
+| Backend      | Supabase (Auth, DB, Storage) |
+| Hosting      | Vercel / Netlify     |
+| Database     | PostgreSQL (via Supabase) |
+| State Mgmt   | React Hooks / Context API |
+| Auth         | Supabase Auth        |
 
-Follow these steps:
+---
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 🚀 Getting Started
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 1. Clone the Repository
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```bash
+git clone https://github.com/your-username/blw-employee-nexus-hub.git
+cd blw-employee-nexus-hub
 ```
 
-**Edit a file directly in GitHub**
+2. Install Dependencies
+```bash
+npm install
+```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+3. Setup Supabase
+```bash
+Create a project at https://supabase.com
 
-**Use GitHub Codespaces**
+Copy your anon/public keys and project URL
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+Create tables: employees, departments, attendance, notices, etc.
 
-## What technologies are used for this project?
+Enable Supabase Auth (Email + Password)
 
-This project is built with:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Update the .env file:
 
-## How can I deploy this project?
+REACT_APP_SUPABASE_URL=your-project-url
+REACT_APP_SUPABASE_ANON_KEY=your-anon-key
+```
+4. Run Locally
+```bash
+npm start
 
-Simply open [Lovable](https://lovable.dev/projects/ea674731-6c3e-4c1b-8759-d57f5da17de0) and click on Share -> Publish.
+```
+---
 
-## Can I connect a custom domain to my Lovable project?
+🧪 Folder Structure
+```bash
+📁 src
+├── 📁 components
+├── 📁 pages
+├── 📁 services
+├── 📁 context
+├── 📁 utils
+├── App.js
+└── index.js
+```
 
-Yes, you can!
+---
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+✅ Future Enhancements
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+🔔 Real-time notifications
+
+🛠️ Repair ticketing system
+
+🗣️ Internal chat between departments
+
+📱 Android/iOS app version
+
+🧠 AI-powered performance analysis
+
+
+
+---
+
+🙌 Contributing
+
+Contributions, issues, and feature requests are welcome!
+
+How to Contribute:
+
+1. Fork the repository
+
+
+2. Create a new branch (feature/YourFeature)
+
+
+3. Commit your changes
+
+
+4. Push to the branch
+
+
+5. Open a Pull Request
+
+
+
+
+---
+
+📄 License
+
+This project is licensed under the MIT License.
+
+
+---
+
+✉️ Contact
+
+Developer: Shivesh Tiwari
+
+Email: nikutiwari70@gmail.com
+
+LinkedIn: https://www.linkedin.com/in/shivesh-tiwari-68b79a245
+
+GitHub: https://www.github.com/shivesh122
+
+
+---
+
+🚀 BLW Employee Nexus Hub – Powering the workforce behind the locomotives of India.
