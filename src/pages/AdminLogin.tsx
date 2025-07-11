@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Shield, Mail, Lock, Eye, EyeOff, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,17 +8,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/lib/supabaseClient'; // ✅ Make sure this path is correct
 
 const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
+  const [formData, setFormData] = useState({ email: '', password: '' });
 
   const { signIn } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -31,36 +29,43 @@ const AdminLogin = () => {
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
+
     try {
-      const { error } = await signIn(formData.email, formData.password);
-      
-      if (error) {
-        if (error.message.includes('Invalid login credentials')) {
-          toast({
-            title: "Access Denied",
-            description: "Invalid administrator credentials. Please verify your email and password.",
-            variant: "destructive"
-          });
-        } else if (error.message.includes('Email not confirmed')) {
-          toast({
-            title: "Email Not Confirmed",
-            description: "Please check your email and click the confirmation link before signing in.",
-            variant: "destructive"
-          });
-        } else {
-          toast({
-            title: "Access Denied",
-            description: error.message || "Authentication failed. Please contact IT support if you continue to experience issues.",
-            variant: "destructive"
-          });
-        }
-      } else {
+      const { error: signInError, session } = await signIn(formData.email, formData.password);
+
+      if (signInError) {
         toast({
-          title: "Admin Access Granted",
-          description: "Welcome to the administrative dashboard."
+          title: "Access Denied",
+          description: signInError.message || "Invalid login credentials.",
+          variant: "destructive"
         });
+        return;
       }
+
+      // ✅ Check user's role in the "profiles" table
+      const { data: userData, error: roleError } = await supabase
+        .from('profiles') // Replace with 'users' if you use a different table
+        .select('role')
+        .eq('email', formData.email)
+        .single();
+
+      if (roleError || !userData || userData.role !== 'admin') {
+        toast({
+          title: "Access Denied",
+          description: "You are not authorized to access the admin portal.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // ✅ If user is admin
+      toast({
+        title: "Admin Access Granted",
+        description: "Welcome to the administrative dashboard.",
+      });
+
+      navigate('/admin/dashboard'); // ✅ Replace with your admin route
+
     } catch (err) {
       toast({
         title: "System Error",
@@ -94,7 +99,7 @@ const AdminLogin = () => {
             <Alert className="mb-6">
               <AlertTriangle className="h-4 w-4" />
               <AlertDescription>
-                This portal is restricted to authorized BLW administrators only. 
+                This portal is restricted to authorized BLW administrators only.
                 Unauthorized access attempts are logged and monitored.
               </AlertDescription>
             </Alert>
@@ -153,7 +158,7 @@ const AdminLogin = () => {
         <div className="text-center">
           <p className="text-sm text-gray-600">
             Not an administrator?{' '}
-            <Link to="/admindashboard" className="text-blue-600 hover:text-blue-500">
+            <Link to="/employeelogin" className="text-blue-600 hover:text-blue-500">
               Employee Portal
             </Link>
           </p>
