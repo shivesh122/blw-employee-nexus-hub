@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Separator } from '@/components/ui/separator';
 import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
@@ -32,8 +30,8 @@ const Auth = () => {
     setLoading(true);
 
     try {
-      const { error } = await signIn(loginData.email, loginData.password);
-      
+      const { error, session } = await signIn(loginData.email, loginData.password);
+
       if (error) {
         toast({
           title: "Sign In Failed",
@@ -41,11 +39,21 @@ const Auth = () => {
           variant: "destructive"
         });
       } else {
-        toast({
-          title: "Welcome back!",
-          description: "You have been signed in successfully."
-        });
-        navigate('/blog');
+        const role = session?.user?.user_metadata?.role;
+
+        if (role === 'admin') {
+          toast({
+            title: "Welcome Admin",
+            description: "Redirecting to Admin Dashboard"
+          });
+          navigate('/admin-dashboard');
+        } else {
+          toast({
+            title: "Welcome",
+            description: "Signed in successfully"
+          });
+          navigate('/blog');
+        }
       }
     } catch (err) {
       toast({
@@ -60,7 +68,7 @@ const Auth = () => {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (signupData.password !== signupData.confirmPassword) {
       toast({
         title: "Password Mismatch",
@@ -84,9 +92,10 @@ const Auth = () => {
     try {
       const { error } = await signUp(signupData.email, signupData.password, {
         first_name: signupData.firstName,
-        last_name: signupData.lastName
+        last_name: signupData.lastName,
+        role: "employee" // default role on signup
       });
-      
+
       if (error) {
         toast({
           title: "Sign Up Failed",
@@ -95,8 +104,8 @@ const Auth = () => {
         });
       } else {
         toast({
-          title: "Account Created!",
-          description: "Please check your email to confirm your account."
+          title: "Account Created",
+          description: "Check your email to confirm your account."
         });
       }
     } catch (err) {
@@ -269,19 +278,16 @@ const Auth = () => {
 
                   <div className="space-y-2">
                     <Label htmlFor="signup-confirm">Confirm Password</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                      <Input
-                        id="signup-confirm"
-                        type={showPassword ? "text" : "password"}
-                        required
-                        className="pl-10"
-                        placeholder="Confirm your password"
-                        value={signupData.confirmPassword}
-                        onChange={(e) => setSignupData({ ...signupData, confirmPassword: e.target.value })}
-                        disabled={loading}
-                      />
-                    </div>
+                    <Input
+                      id="signup-confirm"
+                      type={showPassword ? "text" : "password"}
+                      required
+                      className="pl-10"
+                      placeholder="Confirm your password"
+                      value={signupData.confirmPassword}
+                      onChange={(e) => setSignupData({ ...signupData, confirmPassword: e.target.value })}
+                      disabled={loading}
+                    />
                   </div>
 
                   <Button type="submit" className="w-full" disabled={loading}>
