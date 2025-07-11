@@ -1,24 +1,24 @@
-
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; // ✅ only once
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
-import Layout from "./components/Layout";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import EmployeeLogin from "./pages/EmployeeLogin";
-import AdminLogin from "./pages/AdminLogin";
-import EmployeeDashboard from "./pages/EmployeeDashboard";
-import AdminDashboard from "./pages/AdminDashboard";
-import Contact from "./pages/Contact";
-import NotFound from "./pages/NotFound";
-import Blog from "./pages/Blog";
-import Post from "./pages/Post";
-import Auth from "./pages/Auth";
+import { Layout } from "./components/Layout";
+import { Home } from "./pages/Home";
+import { About } from "./pages/About";
+import {EmployeeLogin} from "./pages/EmployeeLogin";
+import {AdminLogin} from "./pages/AdminLogin";
+import {EmployeeDashboard} from "./pages/EmployeeDashboard";
+import {AdminDashboard} from "./pages/AdminDashboard";
+import {Contact from} "./pages/Contact";
+import {NotFound} from "./pages/NotFound";
+import {Blog} from "./pages/Blog";
+import {Post} from "./pages/Post";
+import {Auth} from "./pages/Auth";
 
 const queryClient = new QueryClient();
+
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
