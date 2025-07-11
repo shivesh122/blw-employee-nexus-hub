@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Shield, Mail, Lock, Eye, EyeOff, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,53 +12,44 @@ import { useToast } from '@/hooks/use-toast';
 const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
-
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const { signIn } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    
+
     try {
-      const { error } = await signIn(formData.email, formData.password);
-      
+      const { user, error } = await signIn(formData.email, formData.password);
+
       if (error) {
-        if (error.message.includes('Invalid login credentials')) {
-          toast({
-            title: "Access Denied",
-            description: "Invalid administrator credentials. Please verify your email and password.",
-            variant: "destructive"
-          });
-        } else if (error.message.includes('Email not confirmed')) {
-          toast({
-            title: "Email Not Confirmed",
-            description: "Please check your email and click the confirmation link before signing in.",
-            variant: "destructive"
-          });
-        } else {
-          toast({
-            title: "Access Denied",
-            description: error.message || "Authentication failed. Please contact IT support if you continue to experience issues.",
-            variant: "destructive"
-          });
-        }
+        toast({
+          title: "Access Denied",
+          description: error.message.includes('Invalid login credentials')
+            ? "Invalid administrator credentials. Please verify your email and password."
+            : error.message.includes('Email not confirmed')
+            ? "Please check your email and confirm your account before signing in."
+            : error.message || "Authentication failed. Please contact IT support.",
+          variant: "destructive"
+        });
+      } else if (user.role !== 'admin') {
+        toast({
+          title: "Unauthorized",
+          description: "You are not authorized to access the admin dashboard.",
+          variant: "destructive"
+        });
       } else {
         toast({
           title: "Admin Access Granted",
           description: "Welcome to the administrative dashboard."
         });
+        navigate('/admin-dashboard');
       }
     } catch (err) {
       toast({
@@ -78,9 +68,7 @@ const AdminLogin = () => {
         <div className="text-center">
           <Shield className="mx-auto h-12 w-12 text-red-600" />
           <h2 className="mt-6 text-3xl font-bold text-gray-900">Admin Portal</h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Restricted access for BLW administrators
-          </p>
+          <p className="mt-2 text-sm text-gray-600">Restricted access for BLW administrators</p>
         </div>
 
         <Card>
@@ -94,7 +82,7 @@ const AdminLogin = () => {
             <Alert className="mb-6">
               <AlertTriangle className="h-4 w-4" />
               <AlertDescription>
-                This portal is restricted to authorized BLW administrators only. 
+                This portal is restricted to authorized BLW administrators only.
                 Unauthorized access attempts are logged and monitored.
               </AlertDescription>
             </Alert>
