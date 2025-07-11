@@ -7,6 +7,9 @@ import { Badge } from '@/components/ui/badge';
 import { useEmployeeData } from '@/hooks/useEmployeeData';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { EditProfileForm } from '@/components/EditProfileForm';
+import { LeaveRequestForm } from '@/components/LeaveRequestForm';
+import { DemoNotifications } from '@/components/DemoNotifications';
 
 const EmployeeDashboard = () => {
   const { signOut } = useAuth();
@@ -20,7 +23,8 @@ const EmployeeDashboard = () => {
     notifications,
     markAttendance,
     markNotificationAsRead,
-    updateTaskStatus
+    updateTaskStatus,
+    refreshData
   } = useEmployeeData();
 
   const handleSignOut = async () => {
@@ -105,9 +109,7 @@ const EmployeeDashboard = () => {
                   }
                 </p>
               </div>
-              <Button variant="outline" className="w-full mt-4">
-                Edit Profile
-              </Button>
+              <EditProfileForm profile={profile} onSuccess={refreshData} />
             </CardContent>
           </Card>
 
@@ -197,19 +199,20 @@ const EmployeeDashboard = () => {
                     </div>
                   ))
                 )}
-                <Button className="w-full">
-                  Request Leave
-                </Button>
+                <LeaveRequestForm onSuccess={refreshData} />
               </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center">
-                <Bell className="h-5 w-5 mr-2" />
-                Notifications
-              </CardTitle>
+              <div className="flex justify-between items-center">
+                <CardTitle className="flex items-center">
+                  <Bell className="h-5 w-5 mr-2" />
+                  Notifications
+                </CardTitle>
+                <DemoNotifications />
+              </div>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
