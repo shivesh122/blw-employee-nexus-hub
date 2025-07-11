@@ -150,11 +150,9 @@ This project is licensed under the MIT License.
 
 Developer: Shivesh Tiwari and Anurag Gupta
 
-Email: nikutiwari70@gmail.com & anusingh94151158@gmail.com
+Email: nikutiwari70@gmail.com
 
-LinkedIn: https://www.linkedin.com/in/shivesh-tiwari-68b79a245 & 
-https://www.linkedin.com/in/anurag-gupta-baba-94a136325
-
+LinkedIn: https://www.linkedin.com/in/shivesh-tiwari-68b79a245 
 
 ---
 
