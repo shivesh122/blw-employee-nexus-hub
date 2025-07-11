@@ -91,7 +91,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           // Fetch user role after authentication
           setTimeout(async () => {
             const role = await fetchUserRole(session.user.id);
-            setUserRole(role);
+            // Handle the case where role might be 'user' from old data
+            const mappedRole = role === 'user' ? 'employee' : role;
+            setUserRole(mappedRole as 'admin' | 'employee');
           }, 0);
         } else {
           setUserRole(null);
@@ -108,7 +110,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       if (session?.user) {
         const role = await fetchUserRole(session.user.id);
-        setUserRole(role);
+        const mappedRole = role === 'user' ? 'employee' : role;
+        setUserRole(mappedRole as 'admin' | 'employee');
       }
       
       setLoading(false);

@@ -63,7 +63,8 @@ export const useEmployeeManagement = () => {
         return;
       }
 
-      setUserRole(data);
+      const mappedRole = data === 'user' ? 'employee' : data;
+      setUserRole(mappedRole as 'admin' | 'employee');
     } catch (error) {
       console.error('Error fetching user role:', error);
     }

@@ -56,7 +56,7 @@ export const useAdminData = () => {
 
   const fetchAdminStats = async () => {
     try {
-      // Fetch employee stats
+      // Fetch employee stats using the new function
       const { data: employeeStats, error: employeeError } = await supabase
         .rpc('get_employee_stats');
 
@@ -74,7 +74,7 @@ export const useAdminData = () => {
         console.error('Error fetching leave requests:', leaveError);
       }
 
-      // Calculate stats
+      // Calculate stats from the returned JSON
       const totalEmployees = employeeStats?.total_employees || 0;
       const activeEmployees = employeeStats?.employees_by_status?.active || 0;
       const newApplications = employeeStats?.recent_hires || 0;
@@ -183,22 +183,19 @@ export const useAdminData = () => {
 
         if (error) throw error;
       } else {
-        // Send to all employees
-        const { data: employees, error: fetchError } = await supabase
-          .from('employees')
-          .select('user_id')
-          .not('user_id', 'is', null)
-          .eq('status', 'active');
+        // Send to all employees - get user IDs from profiles instead
+        const { data: profiles, error: fetchError } = await supabase
+          .from('profiles')
+          .select('user_id');
 
         if (fetchError) throw fetchError;
 
-        const notifications = employees
-          .filter(emp => emp.user_id)
-          .map(emp => ({
+        const notifications = profiles
+          .map(profile => ({
             title,
             message,
             priority,
-            user_id: emp.user_id!
+            user_id: profile.user_id
           }));
 
         if (notifications.length > 0) {
