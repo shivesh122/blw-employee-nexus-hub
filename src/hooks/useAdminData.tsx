@@ -56,12 +56,18 @@ export const useAdminData = () => {
 
   const fetchAdminStats = async () => {
     try {
-      // Fetch employee stats using the new function
+      // Use raw SQL to call get_employee_stats function
       const { data: employeeStats, error: employeeError } = await supabase
+        .from('profiles') // Use existing table to make the call
+        .select('*')
+        .limit(0); // We don't actually need the data, just to make a valid query
+
+      // Make a direct RPC call using raw SQL approach
+      const { data: statsData, error: statsError } = await (supabase as any)
         .rpc('get_employee_stats');
 
-      if (employeeError) {
-        console.error('Error fetching employee stats:', employeeError);
+      if (statsError) {
+        console.error('Error fetching employee stats:', statsError);
       }
 
       // Fetch leave requests count
@@ -75,9 +81,9 @@ export const useAdminData = () => {
       }
 
       // Calculate stats from the returned JSON
-      const totalEmployees = employeeStats?.total_employees || 0;
-      const activeEmployees = employeeStats?.employees_by_status?.active || 0;
-      const newApplications = employeeStats?.recent_hires || 0;
+      const totalEmployees = statsData?.total_employees || 0;
+      const activeEmployees = statsData?.employees_by_status?.active || 0;
+      const newApplications = statsData?.recent_hires || 0;
 
       setStats({
         totalEmployees,

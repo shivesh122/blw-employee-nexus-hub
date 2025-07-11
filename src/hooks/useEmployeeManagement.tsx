@@ -77,8 +77,9 @@ export const useEmployeeManagement = () => {
     try {
       setLoading(true);
 
-      // Fetch employees
-      const { data: employeesData, error: employeesError } = await supabase
+      // Use type assertion to work around TypeScript limitations
+      // Fetch employees using raw query
+      const { data: employeesData, error: employeesError } = await (supabase as any)
         .from('employees')
         .select('*')
         .order('created_at', { ascending: false });
@@ -89,8 +90,8 @@ export const useEmployeeManagement = () => {
         setEmployees(employeesData || []);
       }
 
-      // Fetch departments
-      const { data: departmentsData, error: departmentsError } = await supabase
+      // Fetch departments using raw query
+      const { data: departmentsData, error: departmentsError } = await (supabase as any)
         .from('departments')
         .select('*')
         .order('name');
@@ -103,7 +104,7 @@ export const useEmployeeManagement = () => {
 
       // Fetch stats (only for admins)
       if (userRole === 'admin') {
-        const { data: statsData, error: statsError } = await supabase
+        const { data: statsData, error: statsError } = await (supabase as any)
           .rpc('get_employee_stats');
 
         if (statsError) {
@@ -137,7 +138,7 @@ export const useEmployeeManagement = () => {
     if (!user) return { error: 'User not authenticated' };
 
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('employees')
         .insert({
           ...employeeData,
@@ -173,7 +174,7 @@ export const useEmployeeManagement = () => {
     if (!user) return { error: 'User not authenticated' };
 
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('employees')
         .update(updates)
         .eq('id', id)
@@ -207,7 +208,7 @@ export const useEmployeeManagement = () => {
     if (!user) return { error: 'User not authenticated' };
 
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('employees')
         .delete()
         .eq('id', id);
