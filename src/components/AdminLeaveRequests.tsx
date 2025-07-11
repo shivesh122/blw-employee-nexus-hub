@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -21,7 +20,7 @@ interface LeaveRequest {
     first_name: string;
     last_name: string;
     employee_id: string;
-  };
+  } | null;
 }
 
 export const AdminLeaveRequests: React.FC = () => {
@@ -37,7 +36,7 @@ export const AdminLeaveRequests: React.FC = () => {
         .from('leave_requests')
         .select(`
           *,
-          profiles (
+          profiles!leave_requests_user_id_fkey (
             first_name,
             last_name,
             employee_id
