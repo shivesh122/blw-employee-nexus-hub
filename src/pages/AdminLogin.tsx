@@ -153,7 +153,7 @@ const AdminLogin = () => {
         <div className="text-center">
           <p className="text-sm text-gray-600">
             Not an administrator?{' '}
-            <Link to="/employee-login" className="text-blue-600 hover:text-blue-500">
+            <Link to="/admindashboard" className="text-blue-600 hover:text-blue-500">
               Employee Portal
             </Link>
           </p>
