@@ -32,20 +32,42 @@ export const AdminLeaveRequests: React.FC = () => {
 
   const fetchLeaveRequests = async () => {
     try {
-      const { data, error } = await supabase
+      // First fetch leave requests
+      const { data: leaveRequestsData, error: leaveRequestsError } = await supabase
         .from('leave_requests')
-        .select(`
-          *,
-          profiles!leave_requests_user_id_fkey (
-            first_name,
-            last_name,
-            employee_id
-          )
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setLeaveRequests(data || []);
+      if (leaveRequestsError) throw leaveRequestsError;
+
+      // Then fetch profiles for all user_ids in leave requests
+      const userIds = leaveRequestsData?.map(req => req.user_id) || [];
+      
+      if (userIds.length === 0) {
+        setLeaveRequests([]);
+        return;
+      }
+
+      const { data: profilesData, error: profilesError } = await supabase
+        .from('profiles')
+        .select('user_id, first_name, last_name, employee_id')
+        .in('user_id', userIds);
+
+      if (profilesError) throw profilesError;
+
+      // Create a map of user_id to profile
+      const profilesMap = new Map();
+      profilesData?.forEach(profile => {
+        profilesMap.set(profile.user_id, profile);
+      });
+
+      // Combine the data
+      const combinedData = leaveRequestsData?.map(request => ({
+        ...request,
+        profiles: profilesMap.get(request.user_id) || null
+      })) || [];
+
+      setLeaveRequests(combinedData);
     } catch (error) {
       console.error('Error fetching leave requests:', error);
       toast({

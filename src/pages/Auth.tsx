@@ -30,7 +30,7 @@ const Auth = () => {
     setLoading(true);
 
     try {
-      const { error, session } = await signIn(loginData.email, loginData.password);
+      const { error } = await signIn(loginData.email, loginData.password);
 
       if (error) {
         toast({
@@ -39,21 +39,11 @@ const Auth = () => {
           variant: "destructive"
         });
       } else {
-        const role = session?.user?.user_metadata?.role;
-
-        if (role === 'admin') {
-          toast({
-            title: "Welcome Admin",
-            description: "Redirecting to Admin Dashboard"
-          });
-          navigate('/admin-dashboard');
-        } else {
-          toast({
-            title: "Welcome",
-            description: "Signed in successfully"
-          });
-          navigate('/blog');
-        }
+        toast({
+          title: "Welcome back!",
+          description: "You have been signed in successfully."
+        });
+        navigate('/blog');
       }
     } catch (err) {
       toast({
@@ -92,8 +82,7 @@ const Auth = () => {
     try {
       const { error } = await signUp(signupData.email, signupData.password, {
         first_name: signupData.firstName,
-        last_name: signupData.lastName,
-        role: "employee" // default role on signup
+        last_name: signupData.lastName
       });
 
       if (error) {

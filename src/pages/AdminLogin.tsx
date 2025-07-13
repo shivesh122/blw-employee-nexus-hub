@@ -26,22 +26,16 @@ const AdminLogin = () => {
     setLoading(true);
 
     try {
-      const { user, error } = await signIn(formData.email, formData.password);
+      const { error } = await signIn(formData.email, formData.password);
 
       if (error) {
         toast({
-          title: "Access Denied",
+          title: "Access Denied", 
           description: error.message.includes('Invalid login credentials')
             ? "Invalid administrator credentials. Please verify your email and password."
             : error.message.includes('Email not confirmed')
             ? "Please check your email and confirm your account before signing in."
             : error.message || "Authentication failed. Please contact IT support.",
-          variant: "destructive"
-        });
-      } else if (user.role !== 'admin') {
-        toast({
-          title: "Unauthorized",
-          description: "You are not authorized to access the admin dashboard.",
           variant: "destructive"
         });
       } else {
