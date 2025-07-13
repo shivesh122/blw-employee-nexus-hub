@@ -12,8 +12,6 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import Blog from "./pages/Blog";
-import Post from "./pages/Post";
 import Auth from "./pages/Auth";
 import EmployeeLogin from "./pages/EmployeeLogin";
 import AdminLogin from "./pages/AdminLogin";
@@ -36,28 +34,29 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const AdminRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading } = useAuth();
+  const { user, userRole, loading } = useAuth();
 
   if (loading) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
-  if (!user || user.role !== "admin") return <Navigate to="/admin-login" replace />;
+  if (!user || userRole !== "admin") return <Navigate to="/admin-login" replace />;
 
   return <>{children}</>;
 };
 
 const EmployeeRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading } = useAuth();
+  const { user, userRole, loading } = useAuth();
 
   if (loading) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
-  if (!user || user.role !== "employee") return <Navigate to="/employee-login" replace />;
+  if (!user || userRole !== "employee") return <Navigate to="/employee-login" replace />;
 
   return <>{children}</>;
 };
 
 const PublicRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading } = useAuth();
+  const { user, userRole, loading } = useAuth();
 
   if (loading) return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
-  if (user) return <Navigate to="/blog" replace />;
+  if (user && userRole === "admin") return <Navigate to="/admin-dashboard" replace />;
+  if (user && userRole === "employee") return <Navigate to="/employee-dashboard" replace />;
 
   return <>{children}</>;
 };
@@ -69,8 +68,6 @@ const AppRoutes = () => (
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
-      <Route path="/blog" element={<Blog />} />
-      <Route path="/post/:slug" element={<Post />} />
       <Route
         path="/auth"
         element={

@@ -10,7 +10,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, signOut } = useAuth();
+  const { user, userRole, signOut } = useAuth();
   const { toast } = useToast();
   
   const isActive = (path: string) => location.pathname === path;
@@ -34,7 +34,13 @@ const Navbar = () => {
 
   // Different navigation items based on authentication status
   const getNavItems = () => {
-    if (user) {
+    if (user && userRole === 'admin') {
+      return [
+        { name: 'Admin Dashboard', path: '/admin-dashboard' },
+        { name: 'About BLW', path: '/about' },
+        { name: 'Contact', path: '/contact' },
+      ];
+    } else if (user && userRole === 'employee') {
       return [
         { name: 'Dashboard', path: '/employee-dashboard' },
         { name: 'About BLW', path: '/about' },
@@ -58,7 +64,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Link to={user ? "/employee-dashboard" : "/"} className="flex items-center space-x-2">
+            <Link to={user ? (userRole === 'admin' ? "/admin-dashboard" : "/employee-dashboard") : "/"} className="flex items-center space-x-2">
               <Train className="h-8 w-8 text-blue-600" />
               <span className="text-xl font-bold text-gray-900">BLW</span>
             </Link>

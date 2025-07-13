@@ -9,10 +9,7 @@ import {
   Users, 
   Shield, 
   Award,
-  ArrowRight,
-  BookOpen,
-  PenTool,
-  MessageCircle
+  ArrowRight
 } from 'lucide-react';
 
 const Home = () => {
@@ -25,20 +22,20 @@ const Home = () => {
             Welcome to <span className="text-blue-600">BLW Portal</span>
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-            Your comprehensive platform for employee management, administrative tools, and community engagement.
-            Join our growing community of writers and readers.
+            Your comprehensive platform for employee management and administrative tools.
+            Join our secure and efficient management system.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">
-              <Link to="/blog">
-                <BookOpen className="mr-2 h-5 w-5" />
-                Explore Blog
+              <Link to="/employee-login">
+                <Users className="mr-2 h-5 w-5" />
+                Employee Portal
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline">
-              <Link to="/auth">
-                <PenTool className="mr-2 h-5 w-5" />
-                Start Writing
+              <Link to="/admin-login">
+                <Shield className="mr-2 h-5 w-5" />
+                Admin Portal
               </Link>
             </Button>
           </div>
@@ -53,11 +50,11 @@ const Home = () => {
               Everything You Need
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              From employee management to community blogging, we've got you covered.
+              From employee management to administrative controls, we've got you covered.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <Card className="text-center hover:shadow-lg transition-shadow">
               <CardHeader>
                 <Building2 className="h-12 w-12 text-blue-600 mx-auto mb-4" />
@@ -94,33 +91,16 @@ const Home = () => {
 
             <Card className="text-center hover:shadow-lg transition-shadow">
               <CardHeader>
-                <BookOpen className="h-12 w-12 text-green-600 mx-auto mb-4" />
-                <CardTitle>Community Blog</CardTitle>
+                <Users className="h-12 w-12 text-green-600 mx-auto mb-4" />
+                <CardTitle>Employee Management</CardTitle>
                 <CardDescription>
-                  Share insights, stories, and connect with fellow community members
+                  Manage employee data, leave requests, and attendance tracking
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <Button asChild variant="outline" className="w-full">
-                  <Link to="/blog">
-                    Read Stories
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="text-center hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <MessageCircle className="h-12 w-12 text-purple-600 mx-auto mb-4" />
-                <CardTitle>Real-time Discussions</CardTitle>
-                <CardDescription>
-                  Engage in live conversations and build meaningful connections
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button asChild variant="outline" className="w-full">
-                  <Link to="/auth">
-                    Join Discussion
+                  <Link to="/about">
+                    Learn More
                   </Link>
                 </Button>
               </CardContent>
@@ -136,11 +116,11 @@ const Home = () => {
             Ready to Get Started?
           </h2>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Join thousands of users who trust our platform for their daily operations and community engagement.
+            Join thousands of users who trust our platform for their daily operations and management needs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg">
-              <Link to="/auth">
+              <Link to="/employee-login">
                 Get Started Today
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
@@ -163,8 +143,8 @@ const Home = () => {
               <div className="text-blue-200">Active Users</div>
             </div>
             <div>
-              <div className="text-4xl font-bold mb-2">500+</div>
-              <div className="text-blue-200">Blog Posts</div>
+              <div className="text-4xl font-bold mb-2">50+</div>
+              <div className="text-blue-200">Departments</div>
             </div>
             <div>
               <div className="text-4xl font-bold mb-2">99.9%</div>

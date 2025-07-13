@@ -13,7 +13,7 @@ const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const { signIn } = useAuth();
+  const { signIn, userRole } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -39,11 +39,23 @@ const AdminLogin = () => {
           variant: "destructive"
         });
       } else {
-        toast({
-          title: "Admin Access Granted",
-          description: "Welcome to the administrative dashboard."
-        });
-        navigate('/admin-dashboard');
+        // Wait a moment for the auth context to update userRole
+        setTimeout(() => {
+          if (userRole !== 'admin') {
+            toast({
+              title: "Access Denied",
+              description: "You are not authorized to access the admin dashboard. Admin privileges required.",
+              variant: "destructive"
+            });
+            // Stay on login page for non-admin users
+          } else {
+            toast({
+              title: "Admin Access Granted",
+              description: "Welcome to the administrative dashboard."
+            });
+            navigate('/admin-dashboard');
+          }
+        }, 1000); // Give time for role to be fetched
       }
     } catch (err) {
       toast({
