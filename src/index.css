@@ -2,41 +2,65 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* BLW Railway Industrial Design System - Modern Railway Aesthetics 
+All colors MUST be HSL with railway-inspired industrial theme.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Railway Industrial Color Palette */
+    --background: 220 15% 97%;
+    --foreground: 220 25% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 220 25% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 220 25% 12%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Railway Steel Blue Primary */
+    --primary: 210 100% 25%;
+    --primary-foreground: 0 0% 98%;
+    --primary-glow: 210 100% 35%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Iron Gray Secondary */
+    --secondary: 220 15% 90%;
+    --secondary-foreground: 220 25% 12%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 15% 94%;
+    --muted-foreground: 220 15% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Railway Orange Accent */
+    --accent: 25 95% 58%;
+    --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 15% 88%;
+    --input: 220 15% 95%;
+    --ring: 210 100% 25%;
 
-    --radius: 0.5rem;
+    /* Railway Infrastructure Theme */
+    --railway-steel: 220 25% 15%;
+    --railway-iron: 220 15% 25%;
+    --railway-signal-green: 142 75% 45%;
+    --railway-signal-red: 0 85% 60%;
+    --railway-warning: 45 95% 55%;
+    
+    /* Modern Glass & Shadows */
+    --glass-bg: 0 0% 100% / 0.85;
+    --glass-border: 220 15% 88% / 0.3;
+    --shadow-steel: 220 25% 15% / 0.15;
+    --shadow-glow: 210 100% 35% / 0.25;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(210 100% 25%), hsl(210 100% 35%));
+    --gradient-steel: linear-gradient(135deg, hsl(220 25% 15%), hsl(220 15% 25%));
+    --gradient-surface: linear-gradient(135deg, hsl(220 15% 97%), hsl(220 15% 94%));
+    --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.9), hsl(220 15% 97% / 0.8));
+
+    --radius: 12px;
 
     --sidebar-background: 0 0% 98%;
 
@@ -56,33 +80,54 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Dark Railway Industrial Theme */
+    --background: 220 25% 8%;
+    --foreground: 220 15% 92%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 220 25% 12%;
+    --card-foreground: 220 15% 92%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 220 25% 12%;
+    --popover-foreground: 220 15% 92%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 210 100% 55%;
+    --primary-foreground: 220 25% 8%;
+    --primary-glow: 210 100% 65%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 220 15% 18%;
+    --secondary-foreground: 220 15% 88%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 220 15% 15%;
+    --muted-foreground: 220 15% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 25 95% 65%;
+    --accent-foreground: 220 25% 8%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 85% 65%;
+    --destructive-foreground: 220 25% 8%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 220 15% 20%;
+    --input: 220 15% 15%;
+    --ring: 210 100% 55%;
+
+    /* Dark Railway Infrastructure */
+    --railway-steel: 220 15% 85%;
+    --railway-iron: 220 15% 75%;
+    --railway-signal-green: 142 75% 55%;
+    --railway-signal-red: 0 85% 70%;
+    --railway-warning: 45 95% 65%;
+    
+    /* Dark Glass & Shadows */
+    --glass-bg: 220 25% 12% / 0.85;
+    --glass-border: 220 15% 35% / 0.3;
+    --shadow-steel: 0 0% 0% / 0.4;
+    --shadow-glow: 210 100% 55% / 0.3;
+
+    /* Dark Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(210 100% 45%), hsl(210 100% 65%));
+    --gradient-steel: linear-gradient(135deg, hsl(220 25% 8%), hsl(220 15% 15%));
+    --gradient-surface: linear-gradient(135deg, hsl(220 25% 12%), hsl(220 15% 10%));
+    --gradient-glass: linear-gradient(135deg, hsl(220 25% 12% / 0.9), hsl(220 15% 8% / 0.8));
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -94,6 +139,8 @@ All colors MUST be HSL.
   }
 }
 
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -101,5 +148,119 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    background: hsl(var(--gradient-surface));
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Railway Typography */
+  .railway-heading {
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Modern Glass Effects */
+  .glass-card {
+    background: hsl(var(--glass-bg));
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--glass-border));
+    box-shadow: 
+      0 8px 32px hsl(var(--shadow-steel)),
+      0 0 0 1px hsl(var(--glass-border)),
+      inset 0 1px 0 hsl(var(--glass-border));
+  }
+
+  /* Railway Industrial Elements */
+  .steel-border {
+    border: 2px solid hsl(var(--railway-steel));
+    position: relative;
+  }
+
+  .steel-border::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    background: var(--gradient-steel);
+    border-radius: inherit;
+    z-index: -1;
+  }
+
+  /* Railway Signal Indicators */
+  .signal-active {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .signal-active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+      transparent,
+      hsl(var(--railway-signal-green) / 0.3),
+      transparent
+    );
+    animation: signal-sweep 2s infinite;
+  }
+
+  @keyframes signal-sweep {
+    0% { left: -100%; }
+    100% { left: 100%; }
+  }
+
+  /* Modern Hover Effects */
+  .hover-lift {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+      0 20px 40px hsl(var(--shadow-steel)),
+      0 0 20px hsl(var(--shadow-glow));
+  }
+
+  /* Railway Track Animation */
+  .track-line {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .track-line::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: repeating-linear-gradient(
+      90deg,
+      hsl(var(--railway-steel)),
+      hsl(var(--railway-steel)) 20px,
+      transparent 20px,
+      transparent 40px
+    );
+    animation: track-move 3s linear infinite;
+  }
+
+  @keyframes track-move {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(40px); }
+  }
+
+  /* Industrial Grid Pattern */
+  .industrial-pattern {
+    background-image: 
+      radial-gradient(circle at 1px 1px, hsl(var(--railway-steel) / 0.15) 1px, transparent 0);
+    background-size: 20px 20px;
   }
 }

@@ -54,132 +54,177 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-background p-6 industrial-pattern">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-            <p className="text-gray-600">BLW Employee Management System</p>
-          </div>
-          <div className="flex space-x-2">
-            <Button>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Employee
-            </Button>
-            <Button variant="outline">
-              <Download className="h-4 w-4 mr-2" />
-              Export Report
-            </Button>
+        {/* Modern Railway Header */}
+        <div className="glass-card rounded-2xl p-8 mb-8 hover-lift">
+          <div className="flex justify-between items-center">
+            <div className="space-y-2">
+              <div className="flex items-center space-x-3">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center shadow-lg">
+                  <Users className="h-6 w-6 text-primary-foreground" />
+                </div>
+                <div>
+                  <h1 className="text-4xl font-bold railway-heading">Admin Control Center</h1>
+                  <p className="text-muted-foreground text-lg">Banaras Locomotive Works • Railway Operations</p>
+                </div>
+              </div>
+              <div className="track-line w-64 h-1 mt-4"></div>
+            </div>
+            <div className="flex space-x-3">
+              <Button className="bg-gradient-to-r from-primary to-primary-glow hover:from-primary-glow hover:to-primary shadow-lg hover-lift">
+                <Plus className="h-4 w-4 mr-2" />
+                Add Employee
+              </Button>
+              <Button variant="outline" className="glass-card border-border/50 hover-lift">
+                <Download className="h-4 w-4 mr-2" />
+                Export Report
+              </Button>
+            </div>
           </div>
         </div>
 
-        {/* Stats Cards */}
+        {/* Modern Railway Stats Grid */}
         <div className="grid md:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Employees</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+          <Card className="glass-card border-0 hover-lift signal-active group">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Total Workforce</CardTitle>
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center shadow-lg">
+                <Users className="h-5 w-5 text-primary-foreground" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.totalEmployees.toLocaleString()}</div>
+              <div className="text-3xl font-bold text-foreground mb-2">{stats.totalEmployees.toLocaleString()}</div>
+              <div className="text-xs text-muted-foreground">Railway Personnel</div>
             </CardContent>
           </Card>
           
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Employees</CardTitle>
-              <Users className="h-4 w-4 text-green-600" />
+          <Card className="glass-card border-0 hover-lift group">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Active Operations</CardTitle>
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center shadow-lg">
+                <Users className="h-5 w-5 text-white" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">{stats.activeEmployees.toLocaleString()}</div>
+              <div className="text-3xl font-bold text-green-600 mb-2">{stats.activeEmployees.toLocaleString()}</div>
+              <div className="text-xs text-muted-foreground">On Duty Today</div>
             </CardContent>
           </Card>
           
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Pending Leaves</CardTitle>
-              <FileText className="h-4 w-4 text-yellow-600" />
+          <Card className="glass-card border-0 hover-lift group">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Leave Requests</CardTitle>
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center shadow-lg">
+                <FileText className="h-5 w-5 text-white" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-yellow-600">{stats.pendingLeaves}</div>
+              <div className="text-3xl font-bold text-yellow-600 mb-2">{stats.pendingLeaves}</div>
+              <div className="text-xs text-muted-foreground">Pending Approval</div>
             </CardContent>
           </Card>
           
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">New Applications</CardTitle>
-              <Bell className="h-4 w-4 text-blue-600" />
+          <Card className="glass-card border-0 hover-lift group">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+              <CardTitle className="text-sm font-medium text-muted-foreground">Applications</CardTitle>
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg">
+                <Bell className="h-5 w-5 text-white" />
+              </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-blue-600">{stats.newApplications}</div>
+              <div className="text-3xl font-bold text-blue-600 mb-2">{stats.newApplications}</div>
+              <div className="text-xs text-muted-foreground">New Submissions</div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Employee Management */}
+        {/* Modern Employee Management */}
         <div className="grid lg:grid-cols-3 gap-6 mb-8">
-          <Card className="lg:col-span-2">
-            <CardHeader>
+          <Card className="lg:col-span-2 glass-card border-0 hover-lift">
+            <CardHeader className="pb-6">
               <div className="flex justify-between items-center">
-                <CardTitle>Employee Records</CardTitle>
-                <div className="flex space-x-2">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-glow flex items-center justify-center">
+                    <Users className="h-4 w-4 text-primary-foreground" />
+                  </div>
+                  <CardTitle className="text-xl font-semibold">Railway Personnel Database</CardTitle>
+                </div>
+                <div className="flex space-x-3">
                   <div className="relative">
-                    <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
-                      placeholder="Search employees..."
-                      className="pl-10 w-64"
+                      placeholder="Search by ID, name, department..."
+                      className="pl-10 w-72 glass-card border-border/50"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
                   </div>
-                  <Button variant="outline" size="icon">
+                  <Button variant="outline" size="icon" className="glass-card border-border/50">
                     <Filter className="h-4 w-4" />
                   </Button>
                 </div>
               </div>
             </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Employee ID</TableHead>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Department</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredEmployees.map((employee) => (
-                    <TableRow key={employee.id}>
-                      <TableCell className="font-medium">{employee.id}</TableCell>
-                      <TableCell>{employee.name}</TableCell>
-                      <TableCell>{employee.department}</TableCell>
-                      <TableCell>
-                        <Badge variant={employee.status === 'Active' ? 'default' : 'secondary'}>
-                          {employee.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem>View Details</DropdownMenuItem>
-                            <DropdownMenuItem>Edit Employee</DropdownMenuItem>
-                            <DropdownMenuItem>Edit Attendance</DropdownMenuItem>
-                            <DropdownMenuItem className="text-red-600">Remove Employee</DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
+            <CardContent className="p-0">
+              <div className="rounded-xl overflow-hidden border border-border/50">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-muted/50">
+                      <TableHead className="font-semibold">Employee ID</TableHead>
+                      <TableHead className="font-semibold">Name</TableHead>
+                      <TableHead className="font-semibold">Department</TableHead>
+                      <TableHead className="font-semibold">Status</TableHead>
+                      <TableHead className="w-12"></TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {filteredEmployees.map((employee, index) => (
+                      <TableRow 
+                        key={employee.id} 
+                        className="hover:bg-muted/30 transition-colors group"
+                      >
+                        <TableCell className="font-mono font-medium text-primary">{employee.id}</TableCell>
+                        <TableCell className="font-medium">{employee.name}</TableCell>
+                        <TableCell>
+                          <span className="px-3 py-1 rounded-full text-xs font-medium bg-secondary text-secondary-foreground">
+                            {employee.department}
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          <Badge 
+                            variant={employee.status === 'Active' ? 'default' : 'secondary'}
+                            className={employee.status === 'Active' ? 
+                              'bg-green-100 text-green-800 border-green-200' : 
+                              'bg-orange-100 text-orange-800 border-orange-200'
+                            }
+                          >
+                            <div className={`w-2 h-2 rounded-full mr-2 ${
+                              employee.status === 'Active' ? 'bg-green-500' : 'bg-orange-500'
+                            }`}></div>
+                            {employee.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="icon" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="glass-card border-border/50">
+                              <DropdownMenuItem>View Details</DropdownMenuItem>
+                              <DropdownMenuItem>Edit Employee</DropdownMenuItem>
+                              <DropdownMenuItem>Edit Attendance</DropdownMenuItem>
+                              <DropdownMenuItem className="text-destructive">Remove Employee</DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </CardContent>
           </Card>
 
@@ -189,13 +234,17 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Admin Actions Section */}
+        {/* Modern Admin Control Center */}
         <div className="grid lg:grid-cols-2 gap-6">
-          {/* Notification Publishing */}
-          <NotificationForm />
+          {/* Enhanced Notification System */}
+          <div className="glass-card rounded-2xl p-6 hover-lift">
+            <NotificationForm />
+          </div>
           
-          {/* Task Assignment */}
-          <TaskAssignmentForm />
+          {/* Enhanced Task Assignment */}
+          <div className="glass-card rounded-2xl p-6 hover-lift">
+            <TaskAssignmentForm />
+          </div>
         </div>
       </div>
     </div>
