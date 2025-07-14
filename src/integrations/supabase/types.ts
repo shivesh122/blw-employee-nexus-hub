@@ -50,57 +50,6 @@ export type Database = {
         }
         Relationships: []
       }
-      blw_records: {
-        Row: {
-          allergies: string[] | null
-          baby_birth_date: string
-          baby_gender: string | null
-          baby_name: string
-          created_at: string | null
-          current_foods: string[] | null
-          feeding_schedule: Json | null
-          id: string
-          milestone_records: Json | null
-          notes: string | null
-          start_date: string
-          updated_at: string | null
-          user_id: string
-          weight_records: Json | null
-        }
-        Insert: {
-          allergies?: string[] | null
-          baby_birth_date: string
-          baby_gender?: string | null
-          baby_name: string
-          created_at?: string | null
-          current_foods?: string[] | null
-          feeding_schedule?: Json | null
-          id?: string
-          milestone_records?: Json | null
-          notes?: string | null
-          start_date: string
-          updated_at?: string | null
-          user_id: string
-          weight_records?: Json | null
-        }
-        Update: {
-          allergies?: string[] | null
-          baby_birth_date?: string
-          baby_gender?: string | null
-          baby_name?: string
-          created_at?: string | null
-          current_foods?: string[] | null
-          feeding_schedule?: Json | null
-          id?: string
-          milestone_records?: Json | null
-          notes?: string | null
-          start_date?: string
-          updated_at?: string | null
-          user_id?: string
-          weight_records?: Json | null
-        }
-        Relationships: []
-      }
       Employees: {
         Row: {
           Email: string

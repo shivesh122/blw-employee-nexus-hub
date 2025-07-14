@@ -9,6 +9,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useAdminData } from '@/hooks/useAdminData';
 import { AdminLeaveRequests } from '@/components/AdminLeaveRequests';
+import { NotificationForm } from '@/components/NotificationForm';
+import { TaskAssignmentForm } from '@/components/TaskAssignmentForm';
 
 const AdminDashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -187,32 +189,14 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Notifications Panel */}
-        <Card>
-          <CardHeader>
-            <div className="flex justify-between items-center">
-              <CardTitle>Organization Notifications</CardTitle>
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                Post Notification
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <h4 className="font-medium text-blue-900">Safety Protocol Update</h4>
-                <p className="text-sm text-blue-700 mt-1">New safety guidelines effective from January 2024</p>
-                <p className="text-xs text-blue-600 mt-2">Posted 2 hours ago • All Departments</p>
-              </div>
-              <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-                <h4 className="font-medium text-green-900">Annual Performance Reviews</h4>
-                <p className="text-sm text-green-700 mt-1">Performance review cycle begins next week</p>
-                <p className="text-xs text-green-600 mt-2">Posted 1 day ago • All Employees</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Admin Actions Section */}
+        <div className="grid lg:grid-cols-2 gap-6">
+          {/* Notification Publishing */}
+          <NotificationForm />
+          
+          {/* Task Assignment */}
+          <TaskAssignmentForm />
+        </div>
       </div>
     </div>
   );
