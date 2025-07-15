@@ -139,8 +139,6 @@ All colors MUST be HSL with railway-inspired industrial theme.
   }
 }
 
-}
-
 @layer base {
   * {
     @apply border-border;
